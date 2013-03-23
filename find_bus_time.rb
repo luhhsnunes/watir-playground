@@ -1,4 +1,4 @@
-load 'find_bus_time.rb'
+load 'find_bus_time_pg_obj.rb'
 
 @bus_stop_number = "3658"
 @bus_line_number = "305"
