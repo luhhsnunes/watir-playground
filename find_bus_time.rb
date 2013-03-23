@@ -2,23 +2,26 @@ require 'watir'
 
 @url = "http://wap.rmtcgoiania.com.br/"
 @text_field_name = "txtStopName"
-@text_field_value = "3658"
 @button_name = "btnAsk"
-@bus_line_number = "305"
-@how_many_minutes = "50"
 @success_message = "Previsto para os proximos 50min"
 @fail_message = "Nao ha previsao para os proximos 50min"
 
-browser= Watir::Browser.new :chrome
+def inicialize(browser)
+ browser= Watir::Browser.new :chrome
+ browser.goto(@url)
+ return browser
+end
 
-browser.goto(@url)
-browser.text_field(:name=> @text_field_name).set(@text_field_value)
+def search(browser,bus_stop_number)
+browser.text_field(:name=> @text_field_name).set @bus_stop_number
 browser.button(:name => @button_name).click
+end
 
+def find_bus_time(browser,line_number,minutes)
 browser.tables.each do |table|
   table.rows.each do |row|
-    if row.cells[0].text == @bus_line_number 
-      if row.cells[-1].text <= @how_many_minutes      	
+    if row.cells[0].text == line_number 
+      if row.cells[-1].text <= minutes      	
         puts @success_message
       else
         puts @fail_message
@@ -26,5 +29,7 @@ browser.tables.each do |table|
     end
   end
 end
-
-browser.close
+end
+def close_browser(browser)
+	browser.close
+end
