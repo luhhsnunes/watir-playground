@@ -42,5 +42,5 @@ end
 def close_browser(browser)
 
  browser.close
- 
+
 end
