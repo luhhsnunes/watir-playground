@@ -1,13 +1,24 @@
-load 'find_bus_time_pg_obj.rb'
+  load 'find_bus_page.rb'
+  require 'rspec'
 
-@bus_stop_number = "3658"
-@bus_line_number = "305"
-@how_many_minutes = "50"
+  describe FindBusPage do
+    before :each do
+      @page = FindBusPage.new
+      @page.search '3658'
+    end
 
-browser = inicialize(browser)
+    after :each do
+      @page.close_browser
+    end
 
-search(browser,@bus_stop_number)
+  	it 'ensures that the next bus time is within 50min' do 
+      @page.find_bus_time '305' 
+      bus_within_50_min = @page.there_is_bus_within? 50
 
-find_bus_time(browser,@bus_line_number,@how_many_minutes)
+    	bus_within_50_min.should == true
+    end
 
-close_browser(browser)
+    it "throws an exception when no bus line was searched" do
+      expect { @page.there_is_bus_within? 50 }.to raise_error
+    end
+  end
